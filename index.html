@@ -11,6 +11,40 @@
     canvas { display:block; margin:0 auto; background:#111; }
   </style>
 </head>
+  <!-- Librería de Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    // ✅ Configuración de Supabase
+    const SUPABASE_URL = "https://tcnsifipbrgtuommoqaw.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRjbnNpZmlwYnJndHVvbW1vcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMjI3OTgsImV4cCI6MjA3MTY5ODc5OH0.3MfdiRb2T0yh6dEVt9oUqngxIpmFfLP5aWycD3VH3tA";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // 🔹 Guardar puntuación
+    async function saveScore(name, score) {
+      const { data, error } = await supabase
+        .from('scores')
+        .insert([{ name, score }]);
+      if (error) {
+        console.error("❌ Error guardando:", error);
+      } else {
+        console.log("✅ Puntuación guardada:", data);
+      }
+    }
+
+    // 🔹 Leer ranking (Top 10)
+    async function loadRanking() {
+      const { data, error } = await supabase
+        .from('scores')
+        .select('*')
+        .order('score', { ascending: false })
+        .limit(10);
+      if (error) {
+        console.error("❌ Error cargando ranking:", error);
+      } else {
+        console.log("🏆 Ranking:", data);
+      }
+    }
+  </script>
 <body>
   <canvas id="game" width="480" height="640"></canvas>
   <div id="ui"></div>
@@ -20,5 +54,34 @@
       window.addEventListener('load', ()=>navigator.serviceWorker.register('./sw.js'));
     }
   </script>
+    <!-- Librería de Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    // Configuración de Supabase (pon aquí tus credenciales reales)
+    const SUPABASE_URL = "https://TU_PROJECT_URL.supabase.co";
+    const SUPABASE_KEY = "TU_ANON_PUBLIC_KEY";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Guardar puntuación
+    async function saveScore(name, score) {
+      const { data, error } = await supabase
+        .from('scores')
+        .insert([{ name, score }]);
+      if (error) console.error("Error guardando:", error);
+      else console.log("✅ Puntuación guardada:", data);
+    }
+
+    // Leer ranking (Top 10)
+    async function loadRanking() {
+      const { data, error } = await supabase
+        .from('scores')
+        .select('*')
+        .order('score', { ascending: false })
+        .limit(10);
+      if (error) console.error("Error cargando:", error);
+      else console.log("🏆 Ranking:", data);
+    }
+  </script>
+
 </body>
 </html>
